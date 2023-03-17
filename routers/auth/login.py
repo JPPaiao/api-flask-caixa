@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from . import db
+from . import resister_user
 
 login_blueprint = Blueprint('login', __name__)
 
@@ -15,33 +15,31 @@ def login():
     senha = int(req['senha'])
     email = str(req['email'])
 
-    try:
-        cursor = db.cursor()
-        cursor.execute(f'''SELECT nome FROM users WHERE nome = '{nome}';''')
-        user_encontrado = list(cursor.fetchall())
-        db.commit()
-        cursor.close()
+    # try:
+    #     cursor = db.cursor()
+    #     cursor.execute(f'''SELECT nome FROM users WHERE nome = '{nome}';''')
+    #     user_encontrado = list(cursor.fetchall())
+    #     db.commit()
+    #     cursor.close()
 
-        if user_encontrado != []:
-            return {
-                "User": user_encontrado,
-                "login": True
-            }
-    except:
-        return f'Erro: Usuario {nome} não encontrado'
+    #     if user_encontrado != []:
+    #         return {
+    #             "User": user_encontrado,
+    #             "login": True
+    #         }
+    # except:
+    return f'Erro: Usuario {nome} não encontrado'
 
 
 @login_blueprint.route('/register', methods=['POST'])
 def register():
     req = request.get_json()
 
-    name = req['nome']
-    senha = req['senha']
+    name = req['name']
+    password = req['password']
     email = req['email']
+    number = req['number']
 
-    cursor = db.cursor()
-    cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s)', (name, senha, email, ))
-    db.commit()
-    cursor.close()
+    response = resister_user(name, password, email, number)
 
-    return f'Usuario {name} Adicionado com sucesso'
+    return response
