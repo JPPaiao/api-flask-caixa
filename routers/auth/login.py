@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-import MySQLdb
+from . import db
 
 login_blueprint = Blueprint('login', __name__)
 
@@ -11,23 +11,25 @@ def auth():
 def login():
     req = request.get_json()
 
-    nome = req['nome']
-    senha = req['senha']
-    email = req['email']
+    nome = str(req['nome'])
+    senha = int(req['senha'])
+    email = str(req['email'])
 
-    db = MySQLdb.connect(host='localhost', user='root', password='', database='db_python')
-    cursor = db.cursor()
+    try:
+        cursor = db.cursor()
+        cursor.execute(f'''SELECT nome FROM users WHERE nome = '{nome}';''')
+        user_encontrado = list(cursor.fetchall())
+        db.commit()
+        cursor.close()
 
-    cursor.execute('SELECT * FROM users')
+        if user_encontrado != []:
+            return {
+                "User": user_encontrado,
+                "login": True
+            }
+    except:
+        return f'Erro: Usuario {nome} não encontrado'
 
-    res = cursor.fetchall()
-    res_list = list(res)
-
-    print(res_list)
-    db.commit()
-    cursor.close()
-
-    return { "res": res_list }
 
 @login_blueprint.route('/register', methods=['POST'])
 def register():
@@ -37,14 +39,9 @@ def register():
     senha = req['senha']
     email = req['email']
 
-    db = MySQLdb.connect(host='localhost', user='root', password='', database='db_python')
     cursor = db.cursor()
-
     cursor.execute('INSERT INTO users VALUES (NULL, % s, % s, % s)', (name, senha, email, ))
     db.commit()
-
-    print(db.fetchall())
-
     cursor.close()
 
-    return 'ok'
+    return f'Usuario {name} Adicionado com sucesso'
