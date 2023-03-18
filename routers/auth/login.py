@@ -1,5 +1,5 @@
 from flask import Blueprint, request
-from . import resister_user
+from . import resister_user, login_user
 
 login_blueprint = Blueprint('login', __name__)
 
@@ -11,35 +11,37 @@ def auth():
 def login():
     req = request.get_json()
 
-    nome = str(req['nome'])
-    senha = int(req['senha'])
-    email = str(req['email'])
+    try:
+        password = req['password']
+        email = req['email']
 
-    # try:
-    #     cursor = db.cursor()
-    #     cursor.execute(f'''SELECT nome FROM users WHERE nome = '{nome}';''')
-    #     user_encontrado = list(cursor.fetchall())
-    #     db.commit()
-    #     cursor.close()
+        respose = login_user(password, email)
+    except KeyError as err:
+        return { "Error": f"KeyError: {err}" }
 
-    #     if user_encontrado != []:
-    #         return {
-    #             "User": user_encontrado,
-    #             "login": True
-    #         }
-    # except:
-    return f'Erro: Usuario {nome} não encontrado'
+    return respose
 
 
 @login_blueprint.route('/register', methods=['POST'])
 def register():
     req = request.get_json()
 
-    name = req['name']
-    password = req['password']
-    email = req['email']
-    number = req['number']
+    try:
+        name = req['name']
+        password = req['password']
+        email = req['email']
+        number = req['number']
 
-    response = resister_user(name, password, email, number)
+        response = resister_user(name, password, email, number)
+    except KeyError as err:
+        return { "Error": f"KeyError: {err}" }
 
     return response
+
+@login_blueprint.route('/edit', methods=['PUT'])
+def edit():
+    req = request.get_json()
+
+    
+
+
