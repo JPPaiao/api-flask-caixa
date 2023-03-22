@@ -57,17 +57,10 @@ def update(id):
     if request.method == 'PUT':
         req = request.get_json()
 
-        if req.get('name'):
-            name = req['name']
-        if req.get('password'):
-            password = req['password']
-        if req.get('email'):
-            email = req['email']
-        if req.get('number'):
-            number = req['number']
+        password = req['password']
+        values = req['values']
 
-        if name or password or email or number:
-            response = update_user(username=name, password=password, email=email, number=number, id=id)
+        response = update_user(id, password, values)
 
     return response
 
@@ -75,12 +68,9 @@ def update(id):
 def delete(id):
     if request.method == 'DELETE':
         req = request.get_json()
-        password = req['password_delete']
+        password = req['password']
 
-        if password == 3003:
-            response = delete_user(id)
-        else:
-            response = { 'Error': 'Senha inválida' }
+        response = delete_user(id, password)
 
     return response
 
