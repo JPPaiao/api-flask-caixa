@@ -26,8 +26,8 @@ def login():
     req = request.get_json()
 
     try:
-        password = req['password']
         email = req['email']
+        password = req['password']
 
         respose = login_user(password, email)
     except KeyError as err:

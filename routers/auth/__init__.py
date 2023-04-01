@@ -20,28 +20,28 @@ def tratament_error(username=None, password=None, email=None, number=None, list_
                     "resposta": True,
                     "Error": f"{ValueError('Valor vazio!')}"
                 }
-
-    for a in list_filds:
-        if ['username'] == list(a) and type(a['username']) != str or ['username'] == list(a) and a['username'] == '' or ['username'] == list(a) and a['username'] == None:
-            return {
-                "resposta": True,
-                "Error": f"{TypeError('Tipo do campo usuário inválido')}"
-            }
-        elif ['password'] == list(a) and type(a['password']) != str or ['password'] == list(a) and a['password'] == '' or ['password'] == list(a) and a['password'] == None:
-            return {
-                "resposta": True,
-                "Error": f"{TypeError('Tipo do campo password inválido')}"
-            }
-        elif ['email'] == list(a) and type(a['email']) != str or ['email'] == list(a) and a['email'] == '' or ['email'] == list(a) and a['email'] == None:
-            return {
-                "resposta": True,
-                "Error": f"{TypeError('Tipo do campo email inválido')}"
-            }
-        elif ['number'] == list(a) and type(a['number']) != int or ['number'] == list(a) and a['number'] == '' or ['number'] == list(a) and a['number'] == None:
-            return {
-                "resposta": True,
-                "Error": f"{TypeError('Tipo do campo number inválido')}"
-            }
+    if list_filds != None:
+        for a in list_filds:
+            if ['username'] == list(a) and type(a['username']) != str or ['username'] == list(a) and a['username'] == '' or ['username'] == list(a) and a['username'] == None:
+                return {
+                    "resposta": True,
+                    "Error": f"{TypeError('Tipo do campo usuário inválido')}"
+                }
+            elif ['password'] == list(a) and type(a['password']) != str or ['password'] == list(a) and a['password'] == '' or ['password'] == list(a) and a['password'] == None:
+                return {
+                    "resposta": True,
+                    "Error": f"{TypeError('Tipo do campo password inválido')}"
+                }
+            elif ['email'] == list(a) and type(a['email']) != str or ['email'] == list(a) and a['email'] == '' or ['email'] == list(a) and a['email'] == None:
+                return {
+                    "resposta": True,
+                    "Error": f"{TypeError('Tipo do campo email inválido')}"
+                }
+            elif ['number'] == list(a) and type(a['number']) != int or ['number'] == list(a) and a['number'] == '' or ['number'] == list(a) and a['number'] == None:
+                return {
+                    "resposta": True,
+                    "Error": f"{TypeError('Tipo do campo number inválido')}"
+                }
 
     return { "resposta": False }
 
@@ -167,6 +167,16 @@ def resister_user(username, password, email, number):
         cursor.close()
         db.close()
 
+def dic_user(list):
+    new_list = list[0]
+    return {
+        "id": new_list[0],
+        "name": new_list[1],
+        "password": new_list[2],
+        "email": new_list[3],
+        "number": new_list[4]
+    }
+
 def login_user(password, email):
     db = db_connect()
     cursor = db.cursor()
@@ -180,14 +190,14 @@ def login_user(password, email):
             cursor.execute(f'''
                 SELECT * FROM users WHERE password = '{password}' AND email = '{email}';
             ''')
-            user_encontrado = cursor.fetchall()
+            user_found = dic_user(list(cursor.fetchall()))
             db.commit()
 
-            if user_encontrado == ():
+            if user_found == ():
                 return { "Error": "E-mail ou senha inválidos!!" }
             else:
                 return {
-                    "User": user_encontrado,
+                    "user": user_found,
                     "login": True
                 }
     except ValueError as err:
