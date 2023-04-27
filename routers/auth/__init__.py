@@ -167,8 +167,11 @@ def resister_user(username, password, email, number):
         cursor.close()
         db.close()
 
-def dic_user(list):
-    new_list = list[0]
+def dic_user(list_user):
+    if list_user == []:
+        return list_user
+
+    new_list = list_user[0]
     return {
         "id": new_list[0],
         "name": new_list[1],
@@ -193,7 +196,7 @@ def login_user(password, email):
             user_found = dic_user(list(cursor.fetchall()))
             db.commit()
 
-            if user_found == ():
+            if user_found == []:
                 return { "Error": "E-mail ou senha inválidos!!" }
             else:
                 return {

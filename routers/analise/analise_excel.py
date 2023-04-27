@@ -1,8 +1,6 @@
-from flask import Blueprint
+from . import analise_blueprint
 import pandas as pd
 import json
-
-analise_blueprint = Blueprint('analise', __name__)
 
 data = []
 df = pd.read_excel('./planilhas/caixa-mensal-2023.xlsx', sheet_name=0)
