@@ -1,5 +1,6 @@
 from . import analise_blueprint
 from flask import request
+import json
 
 def set_total_month(data):
     total = 0
@@ -13,15 +14,16 @@ def arrange_list(data):
     control_day = {
         'date': '',
         'Caixa': 0,
-        'Cartao': 0,
+        'Cartão': 0,
         'Pix': 0,
         'Ifood': 0,
         'total': 0
     }
 
     for row in data:
-        control_day['date'] = row['date']
+        row['value'] = int(row['value'])
         control_day[row['column']] += row['value']
+        control_day['date'] = row['date']
 
     total = set_total_month(control_day)
     control_day['total'] += total
@@ -54,12 +56,15 @@ def set_month(data):
 def order_list_month(data):
     return data['date']
 
-@analise_blueprint.route('/tableMonth')
+@analise_blueprint.route('/tableMonth', methods=['POST'])
 def table_month():
     req = request.get_json()
+    month = req
 
-    data = req['data']
-    data.sort(key=order_list_month)
-    month = set_month(data)
-    
+    if month != None:
+        month.sort(key=order_list_month)
+        month = set_month(month)
+    else:
+        return []
+
     return month
