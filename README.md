@@ -5,4 +5,5 @@ Recebe dados financeiros com valores, descrição se é entradas ou saídas e da
 Techs:
 - Python
 - Flask
+- Pandas
 - MySql
