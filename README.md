@@ -1,3 +1,3 @@
-# api-flask-caixa
+# Uma API de dados financeiros
 
-Uma API com flask e pandas, que pega dados de uma planilha, filtra alguns dados e rotorna como JSON.
+Recebe dados financeiros com valores, descrição se é entradas ou saídas e data e devolve uma tabela separando os dias
