@@ -1,4 +1,4 @@
-from . import analise_blueprint
+from . import analise_blueprint, dbUsers, set_dates
 from flask import request
 
 def set_total_month(data):
@@ -17,17 +17,20 @@ def set_columns_day(data):
         "outputs": {
             "columns": [],
         },
+        "date": data[0]['date']
     }
 
     for row in data:
         if row['description'] == 'inputs':
             if not control_day['inputs'].get(row['column']):
                 control_day['inputs'][row['column']] = 0
-                control_day['inputs']['columns'].append(row['column'])
+                if row['column'] not in control_day['inputs']['columns']:
+                    control_day['inputs']['columns'].append(row['column'])
         else:
             if not control_day['outputs'].get(row['column']):
                 control_day['outputs'][row['column']] = 0
-                control_day['outputs']['columns'].append(row['column'])
+                if row['column'] not in control_day['outputs']['columns']:
+                    control_day['outputs']['columns'].append(row['column'])
 
     for row in data:
         row['value'] = int(row['value'])
@@ -68,7 +71,7 @@ def set_month_day(data):
     date = data[0]['date']
     new_month = list(map(lambda x: set_columns_day(month[x]), set_dates))
 
-    return new_month
+    return new_month[0]
 
 def order_list_month(data):
     return data['date']
@@ -81,7 +84,13 @@ def table_month():
     if month != None:
         month.sort(key=order_list_month)
         month = set_month_day(month)
+        monthSets = set_dates(month)
 
-        return month
+        # print(" ")
+        # print(month)
+        # print(" ")
+        # dbUsers.append(month)
+
+        return monthSets
 
     return month
