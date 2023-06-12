@@ -29,11 +29,11 @@ def login():
         email = req['email']
         password = req['password']
 
-        respose = login_user(password, email)
+        response = login_user(password, email)
     except KeyError as err:
-        respose = { "Error": f"KeyError: {err}" }
+        response = { "Error": f"KeyError: {err}" }
 
-    return respose
+    return response
 
 
 @login_blueprint.route('/register', methods=['POST'])
@@ -42,9 +42,9 @@ def register():
 
     try:
         name = req['name']
-        password = req['password']
+        password = int(req['password'])
         email = req['email']
-        number = req['number']
+        number = int(req['number'])
 
         response = resister_user(name, password, email, number)
     except KeyError as err:

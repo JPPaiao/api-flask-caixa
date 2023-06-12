@@ -3,47 +3,47 @@ from flask import Blueprint
 analise_blueprint = Blueprint('analise', __name__)
 
 def set_dates(datas):
-    def find_index_by_date(lista, data):
-        for i, item in enumerate(lista):
+    def find_index_by_date(lists, data):
+        for i, item in enumerate(lists):
             if item["date"] == data:
                 return i
         return -1
 
-    def update_row_db(rowDB, rowUpdate):
-        newRow = {}
+    def update_row_db(row_db, row_update):
+        new_row = {}
 
-        for row in rowDB:
-            newRow[row] = rowDB[row]
+        for row in row_db:
+            new_row[row] = row_db[row]
 
-        for row in rowUpdate:
+        for row in row_update:
             if 'date' != row != 'total' and row != 'columns':
-                if row not in newRow['columns']:
-                    newRow['columns'].append(row)
-                    newRow[row] = rowUpdate[row]
+                if row not in new_row['columns']:
+                    new_row['columns'].append(row)
+                    new_row[row] = row_update[row]
                 else:
-                    newRow[row] += rowUpdate[row]
+                    new_row[row] += row_update[row]
 
-        newRow['total'] += rowUpdate['total']
+        new_row['total'] += row_update['total']
 
-        return newRow
+        return new_row
 
     date = datas['date']
-    indice = find_index_by_date(dbUsers, date)
+    index = find_index_by_date(dbUsers, date)
 
-    if indice != -1:
+    if index != -1:
         description_input = 'inputs'
         description_output = 'outputs'
-        
+
         update_data_inputs = datas[description_input]
-        row_db_inputs = dbUsers[indice][description_input]
+        row_db_inputs = dbUsers[index][description_input]
         update_data_outputs = datas[description_output]
-        row_db_outputs = dbUsers[indice][description_output]
+        row_db_outputs = dbUsers[index][description_output]
 
         new_datas_inputs = update_row_db(row_db_inputs, update_data_inputs)
         new_datas_outputs = update_row_db(row_db_outputs, update_data_outputs)
 
-        dbUsers[indice][description_input].update(new_datas_inputs)
-        dbUsers[indice][description_output].update(new_datas_outputs)
+        dbUsers[index][description_input].update(new_datas_inputs)
+        dbUsers[index][description_output].update(new_datas_outputs)
     else:
         new_data = {
             'date': date,

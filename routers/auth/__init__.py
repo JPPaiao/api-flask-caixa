@@ -10,15 +10,10 @@ def tratament_error(username=None, password=None, email=None, number=None, list_
                     "resposta": True,
                     "Error": f"{TypeError('Tipo errado')}"
                 }
-            elif a == number and type(a) != int:
+            elif a == number and type(a) != int or a == "":
                 return {
                     "resposta": True,
-                    "Error": f"{TypeError('Tipo errado')}"
-                }
-            elif a == "":
-                return {
-                    "resposta": True,
-                    "Error": f"{ValueError('Valor vazio!')}"
+                    "Error": f"{TypeError('Tipo errado ou valor vazio')}"
                 }
     if list_filds != None:
         for a in list_filds:
@@ -110,9 +105,8 @@ def users_activate():
     cursor = db.cursor()
 
     try:
-        cursor.execute(f'''
-            SELECT name, email, number FROM users;
-        ''')
+        query = f'SELECT name, email, number FROM users;'
+        cursor.execute(query)
         users = cursor.fetchall()
         db.commit()
 

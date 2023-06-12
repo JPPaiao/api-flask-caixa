@@ -1,4 +1,4 @@
-from . import analise_blueprint, dbUsers, set_dates
+from . import analise_blueprint, set_dates
 from flask import request
 
 def set_total_month(data):
@@ -84,13 +84,8 @@ def table_month():
     if month != None:
         month.sort(key=order_list_month)
         month = set_month_day(month)
-        monthSets = set_dates(month)
+        set_month = set_dates(month)
 
-        # print(" ")
-        # print(month)
-        # print(" ")
-        # dbUsers.append(month)
-
-        return monthSets
+        return set_month
 
     return month
