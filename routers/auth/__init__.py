@@ -1,7 +1,7 @@
 import MySQLdb
 
-def tratament_error(username=None, password=None, email=None, number=None, list_filds=None):
-    filds = [username, password, email, number]
+def tratament_error(username=None, pasword=None, email=None, number=None, list_filds=None):
+    filds = [username, pasword, email, number]
 
     for a in filds:
         if a != None:
@@ -22,10 +22,10 @@ def tratament_error(username=None, password=None, email=None, number=None, list_
                     "resposta": True,
                     "Error": f"{TypeError('Tipo do campo usuário inválido')}"
                 }
-            elif ['password'] == list(a) and type(a['password']) != str or ['password'] == list(a) and a['password'] == '' or ['password'] == list(a) and a['password'] == None:
+            elif ['pasword'] == list(a) and type(a['pasword']) != str or ['pasword'] == list(a) and a['pasword'] == '' or ['pasword'] == list(a) and a['pasword'] == None:
                 return {
                     "resposta": True,
-                    "Error": f"{TypeError('Tipo do campo password inválido')}"
+                    "Error": f"{TypeError('Tipo do campo pasword inválido')}"
                 }
             elif ['email'] == list(a) and type(a['email']) != str or ['email'] == list(a) and a['email'] == '' or ['email'] == list(a) and a['email'] == None:
                 return {
@@ -40,26 +40,27 @@ def tratament_error(username=None, password=None, email=None, number=None, list_
 
     return { "resposta": False }
 
-def validate_users(id, password):
+def validate_users(id, pasword):
     db = db_connect()
     cursor = db.cursor()
 
     try:
         cursor.execute(f'''
-            SELECT password FROM users WHERE id='{id}'
+            SELECT pasword FROM users WHERE id='{id}'
         ''')
         db.commit()
 
         rows = list(cursor.fetchmany())
+        user_pasword = ''
         for row in rows:
-            user_password = row[0]
+            user_pasword = row[0]
 
         if rows == []:
             return {
                 "resposta": True,
                 "Error": "Usuário não encontrado"
             }
-        elif password != user_password:
+        elif pasword != user_pasword:
             return {
                 "resposta": True,
                 "Error": "Senha inválida"
@@ -76,7 +77,7 @@ def validate_users(id, password):
         db.close()
 
 def db_connect():
-    db = MySQLdb.connect(host='localhost', user='root', password='', database='db_python')
+    db = MySQLdb.connect(host='localhost', user='root', pasword='', database='db_python')
     return db
 
 
@@ -85,8 +86,8 @@ def query_update(id, values):
     for value in values:
         if "username" in list(value):
             list_filds.append(f"name='{value['username']}',")
-        elif "password" in list(value):
-            list_filds.append(f"password='{value['password']}',")
+        elif "pasword" in list(value):
+            list_filds.append(f"pasword='{value['pasword']}',")
         elif "email" in list(value):
             list_filds.append(f"email='{value['email']}',")
         elif "number" in list(value):
@@ -139,17 +140,17 @@ def user(id):
         cursor.close()
         db.close()
 
-def resister_user(username, password, email, number):
+def resister_user(username, pasword, email, number):
     db = db_connect()
     cursor = db.cursor()
 
     try:
-        validate = tratament_error(username=username, password=password, email=email, number=number)
+        validate = tratament_error(username=username, pasword=pasword, email=email, number=number)
 
         if validate["resposta"]:
             return { "Error": validate["Error"] }
         else:
-            cursor.execute('INSERT INTO users VALUES (NULL, %s, %s, %s, %s)', (username, password, email, number))
+            cursor.execute('INSERT INTO users VALUES (NULL, %s, %s, %s, %s)', (username, pasword, email, number))
             db.commit()
 
             return {
@@ -169,23 +170,23 @@ def dic_user(list_user):
     return {
         "id": new_list[0],
         "name": new_list[1],
-        "password": new_list[2],
+        "pasword": new_list[2],
         "email": new_list[3],
         "number": new_list[4]
     }
 
-def login_user(password, email):
+def login_user(pasword, email):
     db = db_connect()
     cursor = db.cursor()
 
     try:
-        validate = tratament_error(password=password, email=email)
+        validate = tratament_error(pasword=pasword, email=email)
 
         if validate['resposta']:
             return { "Error": validate['Error'] }
         else:
             cursor.execute(f'''
-                SELECT * FROM users WHERE password = '{password}' AND email = '{email}';
+                SELECT * FROM users WHERE pasword = '{pasword}' AND email = '{email}';
             ''')
             user_found = dic_user(list(cursor.fetchall()))
             db.commit()
@@ -203,12 +204,12 @@ def login_user(password, email):
         cursor.close()
         db.close()
 
-def update_user(id, password, values):
+def update_user(id, pasword, values):
     db = db_connect()
     cursor = db.cursor()
 
     try:
-        validate_user = validate_users(id, password)
+        validate_user = validate_users(id, pasword)
         validate_filds = tratament_error(list_filds=values)
 
         if validate_user['resposta']:
@@ -229,12 +230,12 @@ def update_user(id, password, values):
         cursor.close()
         db.close()
 
-def delete_user(id, password):
+def delete_user(id, pasword):
     db = db_connect()
     cursor = db.cursor()
 
     try:
-        validate = validate_users(id, password)
+        validate = validate_users(id, pasword)
 
         if validate['resposta']:
             return { "Error": validate['Error'] }
