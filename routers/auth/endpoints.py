@@ -1,7 +1,8 @@
 from flask import Blueprint, request
-from . import resister_user, login_user, update_user, delete_user, user, users_activate
+from . import resister_user, update_user, delete_user, user, users_activate
+from .login import login_user
 
-login_blueprint = Blueprint('login', __name__)
+login_blueprint = Blueprint('endpoints', __name__)
 
 @login_blueprint.route('/users')
 def users():
@@ -26,10 +27,12 @@ def login():
     req = request.get_json()
 
     try:
-        email = req['email']
-        password = req['password']
+        data_user = {
+            "email": req['email'],
+            "password": req['password']
+        }
 
-        response = login_user(password, email)
+        response = login_user(data_user)
     except KeyError as err:
         response = { "Error": f"KeyError: {err}" }
 

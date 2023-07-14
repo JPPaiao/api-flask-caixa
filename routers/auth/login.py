@@ -1,22 +1,22 @@
-from tables_class import User
-from connection_db import session
+from .tables_class import User
+from .connection_db import session
 
 def login_user(data_user):
-    try:
-        user = session.query(User).filter(User.email == data_user.email).one()
+    user_dict = {}
 
-        if user:
-            if user.password == data_user.password:
-                return {
-                    "user": user
-                }
-            else:
-                return {
-                    "Error": "Email ou senha não inválido"
-                }
+    try:
+        user = session.query(User).filter(User.email == data_user['email']).one()
+
+        if user.password == data_user['password']:
+            user_dict['email'] = user.email 
+            user_dict['password'] = user.password
+
+            return {
+                "user": user_dict
+            }
         else:
             return {
-                "Error": "Erro usuário não encontrado"
+                "Error": "Email ou senha não inválido"
             }
     except Exception as e:
         session.rollback()
