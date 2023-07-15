@@ -1,3 +1,4 @@
+from sqlalchemy.exc import IntegrityError
 from .tables_class import User
 from .connection_db import session
 
@@ -5,7 +6,7 @@ def login_user(data_user):
     user_dict = {}
 
     try:
-        user = session.query(User).filter(User.email == data_user['email']).one()
+        user = session.query(User).filter(User.email == data_user['email']).first()
 
         if user.password == data_user['password']:
             user_dict['email'] = user.email 
@@ -31,18 +32,18 @@ def login_user(data_user):
 def set_user(new_user):
     if new_user:
         try:
-            user = User(username=new_user.username, password=new_user.password, email=new_user.email, number=new_user.number)
+            user = User(username=new_user["username"], password=new_user["password"], email=new_user["email"], number=new_user["number"])
             session.add(user)
             session.commit()
 
             return {
                 "Success": "Usuario adicionado com sucesso"
             }
-        except Exception as e:
+        except IntegrityError as e:
             session.rollback()
 
             return {
-                "Error": "Erro usuário não pode ser adicionado"
+                "Error": "Erro email ja existente no banco de dados"
             } 
         finally:
             session.close()       
@@ -105,7 +106,13 @@ def get_users_all():
 # MODIFICANDO
 def update_user(id, update):
     try:
-        user = session.query(User).filter(User.id == id)
+        user = session.query(User).get(User.id == id)
+        existing_user = session.query(User).filter(User.email == update['email']).first()
+
+        if existing_user.id != id:
+            return {
+                "Error": "Erro email ja esta sendo usado por outro usuário"
+            }
 
         if user:
             user = user.update(update, synchronize_session='fetch')

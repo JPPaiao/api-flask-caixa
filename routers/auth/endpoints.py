@@ -1,6 +1,6 @@
 from flask import Blueprint, request
-from . import resister_user, update_user, delete_user, user, users_activate
-from .login import login_user
+from . import update_user, delete_user, user, users_activate
+from .login import login_user, set_user
 
 login_blueprint = Blueprint('endpoints', __name__)
 
@@ -44,12 +44,14 @@ def register():
     req = request.get_json()
 
     try:
-        name = req['name']
-        password = int(req['password'])
-        email = req['email']
-        number = int(req['number'])
+        data_user = {
+            "username": req['name'],
+            "password": req['password'],
+            "email": req['email'],
+            "number": req['number']
+        }
 
-        response = resister_user(name, password, email, number)
+        response = set_user(data_user)
     except KeyError as err:
         response = { "Error": f"KeyError: {err}" }
 
