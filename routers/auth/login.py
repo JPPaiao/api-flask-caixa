@@ -1,6 +1,6 @@
 from sqlalchemy.exc import IntegrityError
 from .tables_class import User
-from .connection_db import session
+from ..connection_db.connection_db import session
 
 def login_user(data_user):
     user_dict = {}

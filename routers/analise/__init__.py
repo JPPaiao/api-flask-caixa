@@ -57,99 +57,96 @@ def set_dates(datas):
 
 dbUsers = [
     {
-        "date": "12/05/2023",
+        "date": "12/07/2023",
         "inputs": {
-            "asd": 300,
+            "mercado": 300,
             "caixa": 300,
             "cartao": 300,
             "columns": [
                 "caixa",
                 "cartao",
                 "pix",
-                "pix",
-                "asd"
+                "mercado",
             ],
-            "date": "12/05/2023",
-            "pix": 600,
-            "total": 1500
+            "date": "12/07/2023",
+            "pix": 300,
+            "total": 1200
         },
         "outputs": {
-            "asd": 300,
-            "bvs": 300,
-            "columns": [
-                "asd",
-                "qw",
-                "bvs",
-                "fd"
-            ],
-            "date": "12/05/2023",
-            "fd": 10,
-            "qw": 300,
-            "total": 910
-        }
-    },
-    {
-        "date": "13/05/2023",
-        "inputs": {
-            "asd": 300,
+            "mercado": 300,
             "caixa": 300,
             "cartao": 300,
             "columns": [
                 "caixa",
                 "cartao",
                 "pix",
-                "pix",
-                "asd"
+                "mercado",
             ],
-            "date": "13/05/2023",
-            "pix": 600,
-            "total": 1500
+            "date": "12/07/2023",
+            "pix": 300,
+            "total": 1200
         },
-        "outputs": {
-            "asd": 300,
-            "bvs": 300,
-            "columns": [
-                "asd",
-                "qw",
-                "bvs",
-                "fd"
-            ],
-            "date": "13/05/2023",
-            "fd": 10,
-            "qw": 300,
-            "total": 910
-        }
     },
     {
-        "date": "14/05/2023",
+        "date": "13/07/2023",
         "inputs": {
-            "asd": 500,
-            "caixa": 500,
-            "cartao": 500,
+            "mercado": 300,
+            "caixa": 300,
+            "cartao": 300,
             "columns": [
                 "caixa",
                 "cartao",
                 "pix",
-                "pix",
-                "asd"
+                "mercado",
             ],
-            "date": "14/05/2023",
-            "pix": 500,
-            "total": 1500
+            "date": "13/07/2023",
+            "pix": 300,
+            "total": 1200
         },
         "outputs": {
-            "asd": 300,
-            "bvs": 300,
+            "mercado": 300,
+            "caixa": 300,
+            "cartao": 300,
             "columns": [
-                "asd",
-                "qw",
-                "bvs",
-                "fd"
+                "caixa",
+                "cartao",
+                "pix",
+                "mercado",
             ],
-            "date": "14/05/2023",
-            "fd": 10,
-            "qw": 300,
-            "total": 910
-        }
+            "date": "13/07/2023",
+            "pix": 300,
+            "total": 1200
+        },
+    },
+    {
+        "date": "14/07/2023",
+        "inputs": {
+            "mercado": 300,
+            "caixa": 300,
+            "cartao": 300,
+            "columns": [
+                "caixa",
+                "cartao",
+                "pix",
+                "mercado",
+            ],
+            "date": "14/07/2023",
+            "pix": 300,
+            "total": 1200
+        },
+        "outputs": {
+            "mercado": 300,
+            "caixa": 300,
+            "cartao": 300,
+            "columns": [
+                "caixa",
+                "cartao",
+                "pix",
+                "mercado",
+            ],
+            "date": "14/07/2023",
+            "pix": 300,
+            "total": 1200
+        },
     },
 ]

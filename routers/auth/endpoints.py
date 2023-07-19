@@ -1,22 +1,12 @@
 from flask import Blueprint, request
-from . import update_user, delete_user, user, users_activate
-from .login import login_user, set_user
+from .login import login_user, set_user, get_users_all, update_user, delete_user
 
 login_blueprint = Blueprint('endpoints', __name__)
 
 @login_blueprint.route('/users')
 def users():
     try:
-        response = users_activate()
-    except Exception as err:
-        response =  { "Error": f"Error: {err}"}
-
-    return response
-
-@login_blueprint.route('/<int:id>')
-def auth(id):
-    try:
-        response = user(id)
+        response = get_users_all()
     except Exception as err:
         response =  { "Error": f"Error: {err}"}
 
@@ -64,10 +54,9 @@ def update(id):
     if request.method == 'PUT':
         req = request.get_json()
 
-        password = req['password']
-        values = req['values']
+        update = req['update']
 
-        response = update_user(id, password, values)
+        response = update_user(id, update)
 
     return response
 
@@ -76,9 +65,7 @@ def delete(id):
     response = {}
 
     if request.method == 'DELETE':
-        req = request.get_json()
-        password = req['password']
 
-        response = delete_user(id, password)
+        response = delete_user(id)
 
     return response
