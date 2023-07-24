@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from routers.auth.endpoints import login_blueprint
-from routers.analise.routers_table_month import analise_blueprint
+from routers.analise.endpoints import analise_blueprint
 from routers.analise.analise_excel import analise_blueprint
 
 app = Flask(__name__)

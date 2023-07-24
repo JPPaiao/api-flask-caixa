@@ -1,6 +1,3 @@
-from . import analise_blueprint, set_dates
-from flask import request
-
 def set_total_month(data):
     total = 0
     for day in data:
@@ -72,20 +69,3 @@ def set_month_day(data):
     new_month = list(map(lambda x: set_columns_day(month[x]), set_dates))
 
     return new_month[0]
-
-def order_list_month(data):
-    return data['date']
-
-@analise_blueprint.route('/tableMonth', methods=['POST'])
-def table_month():
-    req = request.get_json()
-    month = req
-
-    if month != None:
-        month.sort(key=order_list_month)
-        month = set_month_day(month)
-        set_month = set_dates(month)
-
-        return set_month
-
-    return month
